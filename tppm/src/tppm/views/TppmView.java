@@ -2,7 +2,7 @@
  * TppmView.java
  */
 
-package tppm;
+package tppm.views;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -127,11 +127,11 @@ public class TppmView extends FrameView {
 
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(tppm.TppmApp.class).getContext().getResourceMap(TppmView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(tppm.views.TppmApp.class).getContext().getResourceMap(TppmView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(tppm.TppmApp.class).getContext().getActionMap(TppmView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(tppm.views.TppmApp.class).getContext().getActionMap(TppmView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);

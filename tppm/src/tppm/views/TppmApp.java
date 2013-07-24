@@ -2,7 +2,7 @@
  * TppmApp.java
  */
 
-package tppm;
+package tppm.views;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
