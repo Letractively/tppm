@@ -8,7 +8,7 @@ import java.util.Date;
 import tppm.dao.EmpregadoDAO;
 import tppm.domains.*;
 import tppm.exceptions.*;
-import tppm.utils.ValidacaoUtils;
+import tppm.utils.ValidacaoUtils2;
 
 /**
  *
@@ -40,48 +40,48 @@ public class EmpregadoService {
     }
     
     private void validarCpf(String cpf) throws ValidacaoException{
-        ValidacaoUtils.validaStringObrigatoria(cpf, "CPF");
-        ValidacaoUtils.validaNumeroCPF(cpf);
+        ValidacaoUtils2.validaStringObrigatoria(cpf, "CPF");
+        ValidacaoUtils2.validaNumeroCPF(cpf);
         if(verificarSeExisteEmpregadoComCPF(cpf)){
             throw new ValidacaoException("O CPF inserido já está cadastrado no sistema!");
         }
     }
     
     private void validarNome(String nome) throws ValidacaoException{
-        ValidacaoUtils.validaStringObrigatoria(nome, "NOME");
+        ValidacaoUtils2.validaStringObrigatoria(nome, "NOME");
         if(nome.length() > 100){
             throw new ValidacaoException("O nome inserido possui mais de 100 caracteres!");
         }
     }
     
     private void validarSexo(String sexo) throws ValidacaoException{
-        ValidacaoUtils.validaStringObrigatoria(sexo, "SEXO");
+        ValidacaoUtils2.validaStringObrigatoria(sexo, "SEXO");
         if(!sexo.equals(Empregado.SEXO_MASCULINO) && !sexo.equals(Empregado.SEXO_FEMININO)){
             throw new ValidacaoException("O sexo inserido é inválido!");
         }
     }
     
     private void validarDataNascimento(Date dataNascimento) throws ValidacaoException{
-        ValidacaoUtils.validaDataObrigatoria(dataNascimento, "DATA DE NASCIMENTO");
-        ValidacaoUtils.validaSeDataAnteriorADataHoje(dataNascimento, "DATA DE NASCIMENTO");
+        ValidacaoUtils2.validaDataObrigatoria(dataNascimento, "DATA DE NASCIMENTO");
+        ValidacaoUtils2.validaSeDataAnteriorADataHoje(dataNascimento, "DATA DE NASCIMENTO");
     }
     
     private void validarDataAdmissao(Date dataAdmissao, Date dataNascimento) throws ValidacaoException{
-        ValidacaoUtils.validaDataObrigatoria(dataAdmissao, "DATA DE ADMISSÃO");
-        ValidacaoUtils.validaSeDataAnteriorADataHoje(dataAdmissao, "DATA DE ADMISSÃO");
+        ValidacaoUtils2.validaDataObrigatoria(dataAdmissao, "DATA DE ADMISSÃO");
+        ValidacaoUtils2.validaSeDataAnteriorADataHoje(dataAdmissao, "DATA DE ADMISSÃO");
         if(!dataAdmissao.after(dataNascimento)){
             throw new ValidacaoException("A DATA DE ADMISSÃO deve ser posterior a data de nascimento!");
         }
     }
     
     private void validarSalarioAtual(Double salarioAtual) throws ValidacaoException{
-        ValidacaoUtils.validaDoubleObrigatorio(salarioAtual, "SALÁRIO ATUAL");
+        ValidacaoUtils2.validaDoubleObrigatorio(salarioAtual, "SALÁRIO ATUAL");
         
     }
    
     private void validarDataDesligamento(Date dataAdmissao, Date dataDesligamento) throws ValidacaoException{
-        ValidacaoUtils.validaDataObrigatoria(dataDesligamento, "DATA DE DESLIGAMENTO");
-        ValidacaoUtils.validaSeDataAnteriorADataHoje(dataDesligamento, "DATA DE DESLIGAMENTO");
+        ValidacaoUtils2.validaDataObrigatoria(dataDesligamento, "DATA DE DESLIGAMENTO");
+        ValidacaoUtils2.validaSeDataAnteriorADataHoje(dataDesligamento, "DATA DE DESLIGAMENTO");
         if(!dataDesligamento.after(dataAdmissao)){
             throw new ValidacaoException("A DATA DE DESLIGAMENTO deve ser posterior a data de admissão!");
         }
