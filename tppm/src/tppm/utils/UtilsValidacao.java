@@ -11,7 +11,7 @@ import tppm.exceptions.*;
  *
  * @author Tiago
  */
-public class ValidacaoUtils2 {
+public class UtilsValidacao {
     
     static public void validaStringObrigatoria(String stringObrigatoria, String nomeVariavel) throws ValidacaoException{
         if(stringObrigatoria == null) throw new ValidacaoException("O campo '"+nomeVariavel+"' é obrigatório!");
