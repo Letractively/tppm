@@ -69,25 +69,16 @@ public class EmpregadoDAOTest {
     public void testIncluir() throws Exception {
         Empregado empregado = new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA); 
         empregadoDAOXML = new EmpregadoDAOXML();
-        
-        try{
-            empregadoDAOXML.incluir(empregado);
-        } catch(EmpregadoDAOException e){
-            System.out.println("Erro ao incluir "+e.getMessage());
-        } 
-
+               
+        empregadoDAOXML.incluir(empregado);
     }
 
     @Test
     public void testExcluir() throws Exception {
         empregadoDAOXML = new EmpregadoDAOXML();
         Empregado empregado = new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA); 
-
-        try{
-            empregadoDAOXML.excluir(empregado);
-        } catch(EmpregadoDAOException e){
-            System.out.println("Erro ao excluir "+e.getMessage());
-        } 
+       
+        empregadoDAOXML.excluir(empregado);
     }
 
     @Test
@@ -95,11 +86,7 @@ public class EmpregadoDAOTest {
         empregadoDAOXML = new EmpregadoDAOXML();
         Empregado empregado = new Empregado(CPF_VALIDO, NOME_VALIDO_ALTERNATIVO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
 
-        try{
-            empregadoDAOXML.alterar(empregado);
-        } catch(EmpregadoDAOException e){
-            System.out.println("Erro ao alterar "+e.getMessage());
-        } 
+        empregadoDAOXML.alterar(empregado);       
        
     }
 }

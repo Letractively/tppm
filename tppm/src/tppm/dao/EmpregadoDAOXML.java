@@ -25,13 +25,13 @@ public class EmpregadoDAOXML implements EmpregadoDAO{
     private HashMap<String, Empregado> carregarEmpregadosDoArquivo()throws EmpregadoDAOException{
         XMLDecoder xml = null;
 
-        HashMap<String, Empregado> listaEmpregados = new HashMap<String, Empregado>();
+        HashMap<String, Empregado> empregados = new HashMap<String, Empregado>();
 
         try{
             try{
                 
                 xml = new XMLDecoder(new FileInputStream(NOME_ARQUIVO));
-                listaEmpregados = (HashMap<String, Empregado>) xml.readObject();
+                empregados = (HashMap<String, Empregado>) xml.readObject();
             
             }finally{
                 if (xml != null){
@@ -40,11 +40,12 @@ public class EmpregadoDAOXML implements EmpregadoDAO{
             }
         } 
         catch(IOException e){
-           throw new EmpregadoDAOException("Não foi possivel carregar os dados dos Empregados"); 
-           //TODO: Se o arquivo não existir, lançar uma excessao para a criação dele.
+            HashMap<String, Empregado> NovoEmpregados = new HashMap<String, Empregado>();
+            salvarEmpregadosNoArquivo( NovoEmpregados);
+            return NovoEmpregados;
         }
         
-        return listaEmpregados;
+        return empregados;
     }
     
     private void salvarEmpregadosNoArquivo( HashMap<String, Empregado> empregado)throws EmpregadoDAOException{
