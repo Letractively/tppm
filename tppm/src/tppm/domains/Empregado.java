@@ -15,6 +15,13 @@ public class Empregado {
     public static String SEXO_MASCULINO = "Masculino";
     public static String SEXO_FEMININO = "Feminino";
     
+    public static Double SALARIO_MINIMO = 500.00;
+    public static Double SALARIO_MAXIMO = 100000.00;
+    
+    public static int IDADE_MINIMA = 18;
+    
+    public static int TAMANHO_MAXIMO_NOME = 100;
+    
     private String cpf;
     private String nome;
     private String sexo;
