@@ -17,9 +17,12 @@ import tppm.exceptions.EmpregadoDAOException;
  *
  * @author Drope
  */
+
 public class EmpregadoDAOXML implements EmpregadoDAO{
     
-    private HashMap<String, Empregado> carregar()throws EmpregadoDAOException{
+    private static final String NOME_ARQUIVO = "empregadosRepositorio.xml";
+    
+    private HashMap<String, Empregado> carregarEmpregadosDoArquivo()throws EmpregadoDAOException{
         XMLDecoder xml = null;
 
         HashMap<String, Empregado> listaEmpregados = new HashMap<String, Empregado>();
@@ -27,7 +30,7 @@ public class EmpregadoDAOXML implements EmpregadoDAO{
         try{
             try{
                 
-                xml = new XMLDecoder(new FileInputStream("listaEmpregados.xml"));
+                xml = new XMLDecoder(new FileInputStream(NOME_ARQUIVO));
                 listaEmpregados = (HashMap<String, Empregado>) xml.readObject();
             
             }finally{
@@ -37,17 +40,18 @@ public class EmpregadoDAOXML implements EmpregadoDAO{
             }
         } 
         catch(IOException e){
-           throw new EmpregadoDAOException("Não foi possivel carregar os dados dos Empregados");   
+           throw new EmpregadoDAOException("Não foi possivel carregar os dados dos Empregados"); 
+           //TODO: Se o arquivo não existir, lançar uma excessao para a criação dele.
         }
         
         return listaEmpregados;
     }
     
-    private void salvar( HashMap<String, Empregado> empregado)throws EmpregadoDAOException{
+    private void salvarEmpregadosNoArquivo( HashMap<String, Empregado> empregado)throws EmpregadoDAOException{
         XMLEncoder xml = null;
         try{
             try{
-                xml = new XMLEncoder(new FileOutputStream("listaEmpregados.xml"));
+                xml = new XMLEncoder(new FileOutputStream(NOME_ARQUIVO));
                 xml.writeObject(empregado); 
             }finally{
                 if (xml != null){
@@ -59,75 +63,27 @@ public class EmpregadoDAOXML implements EmpregadoDAO{
            throw new EmpregadoDAOException("Não foi possivel salvar os dados dos Empregados");
         }        
     }
-    
-    
-    public Empregado procurar(String cpf)throws EmpregadoDAOException{
-        
-        HashMap<String, Empregado> listaEmpregados = new HashMap<String, Empregado>();
-        Empregado empregado = new Empregado();
-        
-        try{
-            listaEmpregados = carregar();
-        } catch ( EmpregadoDAOException e ){
-            throw e;
-        }
-                
-        empregado = listaEmpregados.get(cpf);
-        
-        return empregado;
 
+    public Empregado procurar(String cpf)throws EmpregadoDAOException{       
+        HashMap<String, Empregado> empregados = carregarEmpregadosDoArquivo();
+        Empregado empregado = new Empregado();
+        empregado = empregados.get(cpf);
+        return empregado;
     }
     public void incluir(Empregado empregado) throws EmpregadoDAOException{
-        
-        HashMap<String, Empregado> listaEmpregados = new HashMap<String, Empregado>();
-                
-        listaEmpregados = carregar();       
-        
-        listaEmpregados.put(empregado.getCpf(),empregado);
-        
-        try{
-            salvar(listaEmpregados);
-        } catch ( EmpregadoDAOException e ){
-             throw e;
-        }
-        
+        HashMap<String, Empregado> empregados = carregarEmpregadosDoArquivo();
+        empregados.put(empregado.getCpf(),empregado);
+        salvarEmpregadosNoArquivo(empregados);
     }
     public void excluir(Empregado empregado) throws EmpregadoDAOException{
-        
-        HashMap<String, Empregado> listaEmpregados = new HashMap<String, Empregado>();
-                
-        try{
-            listaEmpregados = carregar();
-        } catch ( EmpregadoDAOException e ){
-             throw e;
-        }
-        
-        listaEmpregados.remove(empregado.getCpf());
-        
-        try{
-            salvar(listaEmpregados);
-        } catch ( EmpregadoDAOException e ){
-             throw e;
-        }
-        
+        HashMap<String, Empregado> empregados = carregarEmpregadosDoArquivo();
+        empregados.remove(empregado.getCpf());
+        salvarEmpregadosNoArquivo(empregados);    
     }
     public void alterar(Empregado empregado) throws EmpregadoDAOException{
-        HashMap<String, Empregado> listaEmpregados = new HashMap<String, Empregado>();
-                
-        try{
-            listaEmpregados = carregar();
-        } catch ( EmpregadoDAOException e ){
-             throw e;
-        }
-        
-        listaEmpregados.remove(empregado.getCpf());
-        
-        listaEmpregados.put(empregado.getCpf(),empregado);        
-        
-        try{
-            salvar(listaEmpregados);
-        } catch ( EmpregadoDAOException e ){
-             throw e;
-        }
+        HashMap<String, Empregado> empregados = carregarEmpregadosDoArquivo();
+        empregados.remove(empregado.getCpf());
+        empregados.put(empregado.getCpf(),empregado);        
+        salvarEmpregadosNoArquivo(empregados);
     }
 }
