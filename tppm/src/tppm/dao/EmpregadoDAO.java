@@ -5,14 +5,15 @@
 package tppm.dao;
 
 import tppm.domains.Empregado;
+import tppm.exceptions.EmpregadoDAOException;
 
 /**
  *
  * @author Tiago
  */
 public interface EmpregadoDAO {
-    Empregado procurar(String cpf);
-    void incluir(Empregado empregado);
-    void excluir(Empregado empregado);
-    void alterar(Empregado empregado);
+    public Empregado procurar(String cpf) throws EmpregadoDAOException;
+    public void incluir(Empregado empregado) throws EmpregadoDAOException;
+    public void excluir(Empregado empregado) throws EmpregadoDAOException;
+    public void alterar(Empregado empregado) throws EmpregadoDAOException;
 }

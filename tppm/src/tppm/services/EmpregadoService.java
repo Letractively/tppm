@@ -22,14 +22,14 @@ public class EmpregadoService {
         this.empregadoRepositorio = empregadoRepositorio;
     }
     
-    public Empregado incluirEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoException{
+    public Empregado incluirEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoException, EmpregadoDAOException {
         validarDadosEmpregado(cpf, nome, sexo, dataNascimento, dataAdmissao, salarioAtual, dataDesligamento);
         Empregado empregado = new Empregado(cpf, nome, sexo, dataNascimento, dataAdmissao, salarioAtual, dataDesligamento);
         this.empregadoRepositorio.incluir(empregado);
         return empregado;
     }
     
-    private void validarDadosEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoException{
+    private void validarDadosEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoException, EmpregadoDAOException{
         validarCpf(cpf);
         validarNome(nome);
         validarSexo(sexo);
@@ -39,7 +39,7 @@ public class EmpregadoService {
         validarDataDesligamento(dataAdmissao, dataDesligamento);
     }
     
-    private void validarCpf(String cpf) throws ValidacaoException{
+    private void validarCpf(String cpf) throws ValidacaoException, EmpregadoDAOException{
         UtilsValidacao.validaStringObrigatoria(cpf, "CPF");
         UtilsValidacao.validaNumeroCPF(cpf);
         if(verificarSeExisteEmpregadoComCPF(cpf)){
@@ -87,7 +87,7 @@ public class EmpregadoService {
         }
     }
     
-    private boolean verificarSeExisteEmpregadoComCPF(String cpf){
+    private boolean verificarSeExisteEmpregadoComCPF(String cpf)throws EmpregadoDAOException{
         Empregado empregado = this.empregadoRepositorio.procurar(cpf);
         return (empregado == null) ? false : true;
     }
