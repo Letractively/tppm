@@ -23,21 +23,26 @@ public class EmpregadoService {
         this.empregadoRepositorio = empregadoRepositorio;
     }
     
+    public void salvarEmpregado(Empregado empregado) throws ValidacaoException, EmpregadoDAOException{
+        validarDadosEmpregado(empregado);
+        empregadoRepositorio.alterar(empregado);
+    }
+    
     public Empregado incluirEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoException, EmpregadoDAOException {
-        validarDadosEmpregado(cpf, nome, sexo, dataNascimento, dataAdmissao, salarioAtual, dataDesligamento);
         Empregado empregado = new Empregado(cpf, nome, sexo, dataNascimento, dataAdmissao, salarioAtual, dataDesligamento);
-        this.empregadoRepositorio.incluir(empregado);
+        validarDadosEmpregado(empregado);
+        empregadoRepositorio.incluir(empregado);
         return empregado;
     }
     
-    private void validarDadosEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoException, EmpregadoDAOException{
-        validarCpf(cpf);
-        validarNome(nome);
-        validarSexo(sexo);
-        validarDataNascimento(dataNascimento);
-        validarDataAdmissao(dataAdmissao, dataNascimento);
-        validarSalarioAtual(salarioAtual);
-        validarDataDesligamento(dataAdmissao, dataDesligamento);
+    private void validarDadosEmpregado(Empregado empregado) throws ValidacaoException, EmpregadoDAOException{
+        validarCpf(empregado.getCpf());
+        validarNome(empregado.getNome());
+        validarSexo(empregado.getSexo());
+        validarDataNascimento(empregado.getDataNascimento());
+        validarDataAdmissao(empregado.getDataAdmissao(), empregado.getDataNascimento());
+        validarSalarioAtual(empregado.getSalarioAtual());
+        validarDataDesligamento(empregado.getDataAdmissao(), empregado.getDataDesligamento());
     }
     
     private void validarCpf(String cpf) throws ValidacaoException, EmpregadoDAOException{
@@ -102,7 +107,7 @@ public class EmpregadoService {
     }
     
     private boolean verificarSeExisteEmpregadoComCPF(String cpf)throws EmpregadoDAOException{
-        Empregado empregado = this.empregadoRepositorio.procurar(cpf);
+        Empregado empregado = empregadoRepositorio.procurar(cpf);
         return (empregado == null) ? false : true;
     }
 }

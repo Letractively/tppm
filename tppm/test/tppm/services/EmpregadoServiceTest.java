@@ -90,9 +90,9 @@ public class EmpregadoServiceTest {
         when(empregadoDAO.procurar(anyString())).thenReturn(null);
         
         EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        Empregado expResult = empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
+        Empregado resultadoEsperado = empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
         
-        assertEquals(expResult, empregado);
+        assertEquals(resultadoEsperado, empregado);
     }
     
     @Test
