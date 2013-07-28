@@ -4,6 +4,9 @@
  */
 package tppm.domains;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author Tiago Neves + Pedro Jardim
@@ -19,7 +22,22 @@ public class RegraTaxaDeJuros {
         this.numeroMaximoDePrestacoes = numeroMaximoDePrestacoes;
         this.taxaDeJuros = taxaDeJuros;
     }
+    
+    public RegraTaxaDeJuros(RegraTaxaDeJuros regra) {
+        this.numeroMinimoDePrestacoes = regra.getNumeroMinimoDePrestacoes();
+        this.numeroMaximoDePrestacoes = regra.getNumeroMaximoDePrestacoes();
+        this.taxaDeJuros = regra.getTaxaDeJuros();
+    }
 
+    @Override
+    public boolean equals(Object regraComparada) {
+        return getListaPropriedades().equals(((RegraTaxaDeJuros) regraComparada).getListaPropriedades());
+    }
+
+    private List<?> getListaPropriedades(){
+        return Arrays.asList(getNumeroMinimoDePrestacoes(), getNumeroMaximoDePrestacoes(), getTaxaDeJuros());
+    }
+    
     public int getNumeroMaximoDePrestacoes() {
         return numeroMaximoDePrestacoes;
     }

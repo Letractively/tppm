@@ -52,7 +52,7 @@ public class RegraEmprestimoDAOMemoriaTest {
     
     @Before
     public void setUp() throws Exception {
-        for(RegraEmprestimo regra : InicializadorDeDAOsMemoria.regras){
+        for(RegraEmprestimo regra : InicializadorDeDAOsMemoria.regrasEmprestimo){
             regraEmprestimoDAOMemoria.incluir(regra);
         }
     }

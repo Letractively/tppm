@@ -39,8 +39,8 @@ public class RegraEmprestimo {
     }
     
     @Override
-    public boolean equals(Object empregadoComparado) {
-        return getListaPropriedades().equals(((RegraEmprestimo) empregadoComparado).getListaPropriedades());
+    public boolean equals(Object regraComparada) {
+        return getListaPropriedades().equals(((RegraEmprestimo) regraComparada).getListaPropriedades());
     }
 
     private List<?> getListaPropriedades(){
