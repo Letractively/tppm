@@ -4,98 +4,148 @@
  */
 package tppm.services;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Assume;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 import tppm.dao.EmpregadoDAO;
+import tppm.datapoints.EmpregadoDataPoint;
 import static org.junit.Assert.*;
 import tppm.domains.Empregado;
-import tppm.exceptions.ValidacaoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.CPFInvalidoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.CPFJaExisteException;
+import tppm.exceptions.validacaoEmpregadoExceptions.CPFVazioException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataAdmissaoAnteriorDataNascimentoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataAdmissaoNulaException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataAdmissaoPosteriorDataAtualException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataDesligamentoAnteriorDataAdmissaoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataDesligamentoPosteriorDataAtualException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataNascimentoNulaException;
+import tppm.exceptions.validacaoEmpregadoExceptions.DataNascimentoPosteriorDataAtualException;
+import tppm.exceptions.validacaoEmpregadoExceptions.IdadeEmpregadoNaoPermitidaNoCadastroException;
+import tppm.exceptions.validacaoEmpregadoExceptions.NomeMuitoGrandeException;
+import tppm.exceptions.validacaoEmpregadoExceptions.NomeVazioException;
+import tppm.exceptions.validacaoEmpregadoExceptions.SalarioInvalidoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.SalarioNuloException;
+import tppm.exceptions.validacaoEmpregadoExceptions.SexoInvalidoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.SexoVazioException;
+import tppm.utils.Utils;
 import static org.mockito.Mockito.*;
 
 /**
  *
- * @author Tiago
+ * @author Tiago Neves + Pedro Jardim
  */
+
+@RunWith(Theories.class)
 public class EmpregadoServiceTest {
     
-    final String CPF_VALIDO = "12862377775";
-    final String NOME_VALIDO = "Tiago Neves";
-    final String SEXO_VALIDO = "Masculino";
-    final Date DATA_NASCIMENTO_VALIDA = new GregorianCalendar(1992, GregorianCalendar.APRIL, 14).getTime();
-    final Date DATA_ADMISSAO_VALIDA = new GregorianCalendar(2011, GregorianCalendar.APRIL, 14).getTime();
-    final Double SALARIO_VALIDO = 14235.00;
-    final Date DATA_DESLIGAMENTO_VALIDA = new GregorianCalendar(2012, GregorianCalendar.APRIL, 14).getTime();
+    static final String CPF_VALIDO = "12862377775";
+    static final String NOME_VALIDO = "Tiago Neves";
+    static final String SEXO_VALIDO = "Masculino";
+    static final Date DATA_NASCIMENTO_VALIDA = new GregorianCalendar(1992, GregorianCalendar.APRIL, 14).getTime();
+    static final Date DATA_ADMISSAO_VALIDA = new GregorianCalendar(2011, GregorianCalendar.APRIL, 14).getTime();
+    static final Double SALARIO_VALIDO = 14235.00;
+    static final Date DATA_DESLIGAMENTO_VALIDA = new GregorianCalendar(2013, GregorianCalendar.APRIL, 14).getTime();
     
-    final String CPF_INVALIDO = "654";
-    final String NOME_INVALIDO = "carlos alberto de nobrega faria de souza lima faria moutinho cabral álvares soares lima faria moutinho cabral álvares soares lima faria moutinho cabral álvares soares";
-    final String SEXO_INVALIDO = "Homosexual";
-    final Date DATA_NASCIMENTO_INVALIDA;
-    final Date DATA_ADMISSAO_INVALIDA;
-    final Date DATA_ADMISSAO_ANTERIOR_A_DATA_NASCIMENTO;
-    final Double SALARIO_INVALIDO = 100.00;
-    final Date DATA_NASCIMENTO_INFERIOR_IDADE_MINIMA;
-    final Date DATA_DESLIGAMENTO_INVALIDA;
-    final Date DATA_DESLIGAMENTO_ANTERIOR_ADMISSAO;
+    static final String CPF_INVALIDO = "654";
+    static final String NOME_INVALIDO = "carlos alberto de nobrega faria de souza lima faria moutinho cabral álvares soares lima faria moutinho cabral álvares soares lima faria moutinho cabral álvares soares";
+    static final String SEXO_INVALIDO = "Homosexual";
+    static final Date DATA_NASCIMENTO_INVALIDA = Utils.adicionarDiasNaData(new GregorianCalendar().getTime(), 1);
+    static final Date DATA_ADMISSAO_INVALIDA = Utils.adicionarDiasNaData(new GregorianCalendar().getTime(), 1);
+    static final Date DATA_ADMISSAO_ANTERIOR_A_DATA_NASCIMENTO = Utils.adicionarAnosNaData(DATA_NASCIMENTO_VALIDA, -1);
+    static final Double SALARIO_INVALIDO = 100.00;
+    static final Date DATA_NASCIMENTO_INFERIOR_IDADE_MINIMA = Utils.adicionarAnosNaData(DATA_ADMISSAO_VALIDA, -(Empregado.IDADE_MINIMA)+1);
+    static final Date DATA_DESLIGAMENTO_INVALIDA = Utils.adicionarDiasNaData(new GregorianCalendar().getTime(), 1);
+    static final Date DATA_DESLIGAMENTO_ANTERIOR_ADMISSAO = Utils.adicionarAnosNaData(DATA_ADMISSAO_VALIDA, -1);
     
-    public EmpregadoServiceTest() {
-        
-        GregorianCalendar amanha = new GregorianCalendar();
-        amanha.add(GregorianCalendar.YEAR, 1);
-        DATA_NASCIMENTO_INVALIDA = amanha.getTime();
-        DATA_ADMISSAO_INVALIDA = amanha.getTime();
-        DATA_DESLIGAMENTO_INVALIDA = amanha.getTime();
-        
-        GregorianCalendar dataAdmissaoAnterioraDataNascimento = new GregorianCalendar();
-        dataAdmissaoAnterioraDataNascimento.setTime(DATA_NASCIMENTO_VALIDA);
-        dataAdmissaoAnterioraDataNascimento.add(GregorianCalendar.YEAR, -1);
-        DATA_ADMISSAO_ANTERIOR_A_DATA_NASCIMENTO = dataAdmissaoAnterioraDataNascimento.getTime();
-        
-        GregorianCalendar dataNascimentoInferiorIdadeMinima = new GregorianCalendar();
-        dataNascimentoInferiorIdadeMinima.setTime(DATA_ADMISSAO_VALIDA);
-        dataNascimentoInferiorIdadeMinima.add(GregorianCalendar.YEAR, -(Empregado.IDADE_MINIMA)+1);
-        DATA_NASCIMENTO_INFERIOR_IDADE_MINIMA = dataNascimentoInferiorIdadeMinima.getTime();
-        
-        GregorianCalendar dataDesligamentoAnteriorAdmissao = new GregorianCalendar();
-        dataDesligamentoAnteriorAdmissao.setTime(DATA_ADMISSAO_VALIDA);
-        dataDesligamentoAnteriorAdmissao.add(GregorianCalendar.YEAR, -1);
-        DATA_DESLIGAMENTO_ANTERIOR_ADMISSAO = dataDesligamentoAnteriorAdmissao.getTime();
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    @DataPoints
+    public static EmpregadoDataPoint[] empregados = {
+        new EmpregadoDataPoint(
+            new Empregado(CPF_INVALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            CPFInvalidoException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado("", NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            CPFVazioException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, "", SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            NomeVazioException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_INVALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            NomeMuitoGrandeException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, "", DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            SexoVazioException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_INVALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            SexoInvalidoException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, null, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            DataNascimentoNulaException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_INVALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            DataNascimentoPosteriorDataAtualException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_INFERIOR_IDADE_MINIMA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null),
+            IdadeEmpregadoNaoPermitidaNoCadastroException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_ANTERIOR_A_DATA_NASCIMENTO, SALARIO_VALIDO, null),
+            DataAdmissaoAnteriorDataNascimentoException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, null, SALARIO_VALIDO, null),
+            DataAdmissaoNulaException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_INVALIDA, SALARIO_VALIDO, null),
+            DataAdmissaoPosteriorDataAtualException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, null, null),
+            SalarioNuloException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_INVALIDO, null),
+            SalarioInvalidoException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_INVALIDA),
+            DataDesligamentoPosteriorDataAtualException.class
+        ),
+        new EmpregadoDataPoint(
+            new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_ANTERIOR_ADMISSAO),
+            DataDesligamentoAnteriorDataAdmissaoException.class
+        )
+    };
     
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testIncluirEmpregado() throws Exception {
-        Empregado empregado = new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
+        Empregado empregado = new Empregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null);
         
         EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
         when(empregadoDAO.procurar(anyString())).thenReturn(null);
         
         EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        Empregado resultadoEsperado = empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
+        Empregado resultadoEsperado = empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null);
         
         assertEquals(resultadoEsperado, empregado);
     }
     
-    @Test
+    @Test(expected = CPFJaExisteException.class)
     public void testIncluirEmpregadoJaCadastrado() throws Exception {
         Empregado empregado = mock(Empregado.class);
         when(empregado.getCpf()).thenReturn(CPF_VALIDO);
@@ -104,250 +154,20 @@ public class EmpregadoServiceTest {
         when(empregadoDAO.procurar(anyString())).thenReturn(empregado);
         
         EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O CPF inserido já está cadastrado no sistema!")){
-                fail(e.getMessage());
-            }
-        }
+        empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null);
     }
     
-    @Test
-    public void testIncluirEmpregadoCPFInvalido() throws Exception {
+    @Theory
+    public void testIncluirEmpregadoCPFInvalido(EmpregadoDataPoint cenario) throws Exception {
+        Assume.assumeTrue(Arrays.asList(empregados).contains(cenario));
         EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
         EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
         try{
-            empregadoService.incluirEmpregado(CPF_INVALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O CPF inserido não é válido!")){
-                fail(e.getMessage());
-            }
+            empregadoService.incluirEmpregado(cenario.empregado.getCpf(), cenario.empregado.getNome(), cenario.empregado.getSexo(), cenario.empregado.getDataNascimento(), cenario.empregado.getDataAdmissao(), cenario.empregado.getSalarioAtual(), cenario.empregado.getDataDesligamento());
         }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoCPFVazio() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado("", NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'CPF' não pode ser vazio!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoNomeVazio() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, "", SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'NOME' não pode ser vazio!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoNomeMuitoGrande() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_INVALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O nome inserido possui mais de "+Empregado.TAMANHO_MAXIMO_NOME+" caracteres!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoSexoVazio() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, "", DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'SEXO' não pode ser vazio!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoSexoInvalido() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_INVALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O sexo inserido é inválido!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataNascimentoNula() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, null, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'DATA DE NASCIMENTO' é obrigatório!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataNascimentoInvalida() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_INVALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("A data 'DATA DE NASCIMENTO' deve ser anterior a data de hoje!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoIdadeInvalida() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_INFERIOR_IDADE_MINIMA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("A idade do empregado é menor que a idade mínima permitida para contratação!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataAdmissaoNula() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, null, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'DATA DE ADMISSÃO' é obrigatório!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataAdmissaoInvalida() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_INVALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("A data 'DATA DE ADMISSÃO' deve ser anterior a data de hoje!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataAdmissaoAnteriorDataNascimento() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_ANTERIOR_A_DATA_NASCIMENTO, SALARIO_VALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("A DATA DE ADMISSÃO deve ser posterior a data de nascimento!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoSalarioNull() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, null, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'SALÁRIO ATUAL' é obrigatório!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoSalarioInvalido() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_INVALIDO, DATA_DESLIGAMENTO_VALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'SALÁRIO ATUAL' deve ser >= "+Empregado.SALARIO_MINIMO+" e <= "+Empregado.SALARIO_MAXIMO+"!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataDesligamentoNula() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("O campo 'DATA DE DESLIGAMENTO' é obrigatório!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataDesligamentoInvalida() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_INVALIDA);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("A data 'DATA DE DESLIGAMENTO' deve ser anterior a data de hoje!")){
-                fail(e.getMessage());
-            }
-        }
-    }
-    
-    @Test
-    public void testIncluirEmpregadoDataDesligamentoAnteriorDataAdmissao() throws Exception {
-        EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
-        try{
-            empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, DATA_DESLIGAMENTO_ANTERIOR_ADMISSAO);
-            fail();
-        } catch(ValidacaoException e){
-            if(!e.getMessage().equals("A DATA DE DESLIGAMENTO deve ser posterior a data de admissão!")){
+        catch(Exception e){
+            if(cenario.exceptionEsperada != null && e.getClass() != cenario.exceptionEsperada){
+                System.out.println("Erro Inesperado: " + e.getMessage() + " Esperava: " + cenario.exceptionEsperada);
                 fail(e.getMessage());
             }
         }

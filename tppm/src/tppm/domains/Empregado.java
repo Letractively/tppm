@@ -5,10 +5,11 @@
 package tppm.domains;
 
 import java.util.Date;
+import tppm.utils.Utils;
 
 /**
  *
- * @author Tiago
+ * @author Tiago Neves + Pedro Jardim
  */
 public class Empregado {
     
@@ -78,6 +79,10 @@ public class Empregado {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+    
+    public int getIdade(){
+        return Utils.calculaDiferencaAnos(getDataNascimento(), null); 
     }
 
     public String getNome() {

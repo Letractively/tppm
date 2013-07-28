@@ -4,11 +4,13 @@
  */
 package tppm.exceptions;
 
+import tppm.exceptions.XMLDAOExceptions.GenericXMLDAOException;
+
 /**
  *
- * @author Drope
+ * @author Tiago Neves + Pedro Jardim
  */
-public class EmpregadoDAOException extends Exception {
+public class EmpregadoDAOException extends GenericXMLDAOException {
 
     /**
      * Creates a new instance of <code>transacaoException</code> without detail message.

@@ -4,36 +4,16 @@
  */
 package tppm.utils;
 
-import java.util.Date;
-import tppm.exceptions.*;
+import tppm.exceptions.validacaoEmpregadoExceptions.ValidacaoEmpregadoException;
+import tppm.exceptions.validacaoEmpregadoExceptions.CPFInvalidoException;
 
 /**
  *
- * @author Tiago
+ * @author Tiago Neves + Pedro Jardim
  */
 public class UtilsValidacao {
     
-    static public void validaStringObrigatoria(String stringObrigatoria, String nomeVariavel) throws ValidacaoException{
-        if(stringObrigatoria == null) throw new ValidacaoException("O campo '"+nomeVariavel+"' é obrigatório!");
-        if(stringObrigatoria.equals("")) throw new ValidacaoException("O campo '"+nomeVariavel+"' não pode ser vazio!");
-    }
-    
-    static public void validaDataObrigatoria(Date dataObrigatoria, String nomeVariavel) throws ValidacaoException{
-        if(dataObrigatoria == null) throw new ValidacaoException("O campo '"+nomeVariavel+"' é obrigatório!");
-    }
-    
-    static public void validaDoubleObrigatorio(Double doubleObrigatorio, String nomeVariavel) throws ValidacaoException{
-        if(doubleObrigatorio == null) throw new ValidacaoException("O campo '"+nomeVariavel+"' é obrigatório!");
-    }
-    
-    static public void validaSeDataAnteriorADataHoje(Date data, String nomeVariavel) throws ValidacaoException{
-        Date dataHoje = new Date();
-        if(!data.before(dataHoje)){
-            throw new ValidacaoException("A data '"+nomeVariavel+"' deve ser anterior a data de hoje!");
-        }
-    }
-    
-    static public void validaNumeroCPF(String cpf) throws ValidacaoException{
+    static public void validaNumeroCPF(String cpf) throws ValidacaoEmpregadoException{
         //Código obtido no link passado no trabalho: http://javafree.uol.com.br/topic-860897-Validar-CPF--CNPJ-e-consultar-CEP.html
         
         int     d1, d2;  
@@ -82,7 +62,7 @@ public class UtilsValidacao {
 
         //comparar o digito verificador do cpf com o primeiro resto + o segundo resto.  
         if(!nDigVerific.equals(nDigResult)){
-            throw new ValidacaoException("O CPF inserido não é válido!");
+            throw new CPFInvalidoException("O CPF inserido não é válido!");
         }
     }
 }
