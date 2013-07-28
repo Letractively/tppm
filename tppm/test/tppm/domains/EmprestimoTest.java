@@ -10,6 +10,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import tppm.config.TPPMConfig;
 import tppm.datapoints.EmprestimoDataPoint;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -21,8 +22,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(Theories.class)
 public class EmprestimoTest {
-    
-    final Double DELTA = 0.01;
     
     @DataPoints
     public static EmprestimoDataPoint[] emprestimos = {
@@ -63,7 +62,7 @@ public class EmprestimoTest {
         when(regraTaxaDeJuros.getTaxaDeJuros()).thenReturn(cenario.taxaDeJuros);
         
         Emprestimo emprestimo = new Emprestimo(null, cenario.valor, cenario.numeroPrestacoes, regraTaxaDeJuros);
-        assertEquals(cenario.valorTotalEmprestimo, emprestimo.getValorTotalPagar(), DELTA);
+        assertEquals(cenario.valorTotalEmprestimo, emprestimo.getValorTotalPagar(), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
     }
 
     @Theory
@@ -74,6 +73,6 @@ public class EmprestimoTest {
         when(regraTaxaDeJuros.getTaxaDeJuros()).thenReturn(cenario.taxaDeJuros);
         
         Emprestimo emprestimo = new Emprestimo(null, cenario.valor, cenario.numeroPrestacoes, regraTaxaDeJuros);
-        assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(1), DELTA);
+        assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(1), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
     }
 }

@@ -6,8 +6,8 @@ package tppm.dao;
 
 import java.util.HashMap;
 import tppm.domains.Empregado;
-import tppm.exceptions.EmpregadoDAOException;
-import tppm.exceptions.XMLDAOExceptions.GenericXMLDAOException;
+import tppm.exceptions.DAOExceptions.EmpregadoDAOException;
+import tppm.exceptions.DAOExceptions.XMLDAOExceptions.GenericXMLDAOException;
 
 /**
  *
@@ -15,8 +15,11 @@ import tppm.exceptions.XMLDAOExceptions.GenericXMLDAOException;
  */
 public class EmpregadoDAOXML implements EmpregadoDAO{
     
-    private static final String NOME_ARQUIVO = "empregadosRepositorio.xml";
-    private GenericXMLDAO genericXMLDAO = new GenericXMLDAO(NOME_ARQUIVO);
+    private GenericXMLDAO genericXMLDAO;
+
+    public EmpregadoDAOXML(String nomeArquivo) {
+        genericXMLDAO = new GenericXMLDAO(nomeArquivo);
+    }
     
     private HashMap<String, Empregado> carregarEmpregadosDoArquivo() throws EmpregadoDAOException{
         HashMap<String, Empregado> resposta = null;
@@ -35,6 +38,10 @@ public class EmpregadoDAOXML implements EmpregadoDAO{
         } catch (GenericXMLDAOException e) {
             throw new EmpregadoDAOException(e.getMessage());
         }      
+    }
+    
+    public void limparArquivo() throws EmpregadoDAOException{
+        salvarEmpregadosNoArquivo(null);
     }
 
     public Empregado procurar(String cpf)throws EmpregadoDAOException{       

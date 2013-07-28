@@ -10,10 +10,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import tppm.exceptions.XMLDAOExceptions.ErroAoCarregarOArquivoException;
-import tppm.exceptions.XMLDAOExceptions.ErroAoCriarArquivoException;
-import tppm.exceptions.XMLDAOExceptions.ErroAoSalvarNoArquivoException;
-import tppm.exceptions.XMLDAOExceptions.GenericXMLDAOException;
+import tppm.exceptions.DAOExceptions.XMLDAOExceptions.ErroAoCarregarOArquivoException;
+import tppm.exceptions.DAOExceptions.XMLDAOExceptions.ErroAoCriarArquivoException;
+import tppm.exceptions.DAOExceptions.XMLDAOExceptions.ErroAoSalvarNoArquivoException;
+import tppm.exceptions.DAOExceptions.XMLDAOExceptions.GenericXMLDAOException;
 
 /**
  *

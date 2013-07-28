@@ -10,8 +10,8 @@ import tppm.domains.Empregado;
 import tppm.domains.Emprestimo;
 import tppm.domains.RegraEmprestimo;
 import tppm.domains.RegraTaxaDeJuros;
-import tppm.exceptions.RegraEmprestimoException;
-import tppm.exceptions.RegraTaxaDeJurosDAOException;
+import tppm.exceptions.DAOExceptions.RegraEmprestimoDAOException;
+import tppm.exceptions.DAOExceptions.RegraTaxaDeJurosDAOException;
 import tppm.exceptions.validacaoEmprestimoExceptions.EmpregadoDesligadoDaEmpresaException;
 import tppm.exceptions.validacaoEmprestimoExceptions.IdadeMaiorQueAPermitidaParaEmprestimoException;
 import tppm.exceptions.validacaoEmprestimoExceptions.IdadeMenorQueAPermitidaParaEmprestimoException;
@@ -34,13 +34,13 @@ public class EmprestimoService {
         this.regraEmprestimoRepositorio = regraEmprestimoRepositorio;
     }
     
-    public Emprestimo calcularEmprestimo(Empregado empregado, Double valor, int numeroPrestacoes) throws RegraTaxaDeJurosDAOException, ValidacaoEmprestimoException, RegraEmprestimoException{
+    public Emprestimo calcularEmprestimo(Empregado empregado, Double valor, int numeroPrestacoes) throws RegraTaxaDeJurosDAOException, ValidacaoEmprestimoException, RegraEmprestimoDAOException{
         validarParametrosParaEmprestimo(empregado, valor, numeroPrestacoes);
         RegraTaxaDeJuros taxaDeJuros = regraTaxaDeJurosRepositorio.procurar(numeroPrestacoes);
         return new Emprestimo(empregado, valor, numeroPrestacoes, taxaDeJuros);
     }
     
-    private void validarParametrosParaEmprestimo(Empregado empregado, Double valor, int numeroPrestacoes) throws ValidacaoEmprestimoException, RegraTaxaDeJurosDAOException, RegraEmprestimoException{
+    private void validarParametrosParaEmprestimo(Empregado empregado, Double valor, int numeroPrestacoes) throws ValidacaoEmprestimoException, RegraTaxaDeJurosDAOException, RegraEmprestimoDAOException{
         validarNumeroPrestacoes(numeroPrestacoes);
         validarSituacaoEmpregado(empregado);
         validarIdadeEmpregado(empregado);
@@ -59,14 +59,14 @@ public class EmprestimoService {
             throw new EmpregadoDesligadoDaEmpresaException("O empregado já foi desligado da empresa, portanto o empréstimo não pode ser concedido!");
     }
     
-    private void validarIdadeEmpregado(Empregado empregado) throws ValidacaoEmprestimoException, RegraEmprestimoException{
+    private void validarIdadeEmpregado(Empregado empregado) throws ValidacaoEmprestimoException, RegraEmprestimoDAOException{
         if(empregado.getIdade() < regraEmprestimoRepositorio.obterIdadeMinima(empregado.getSexo()))
             throw new IdadeMenorQueAPermitidaParaEmprestimoException("O empregado possui idade menor que a idade mínima permitida!");
         if(empregado.getIdade() > regraEmprestimoRepositorio.obterIdadeMaxima(empregado.getSexo()))
             throw new IdadeMaiorQueAPermitidaParaEmprestimoException("O empregado possui idade maior que a idade máxima permitida!");
     }
     
-    private void validarValorEmprestimo(Empregado empregado, Double valor) throws ValidacaoEmprestimoException, RegraEmprestimoException{
+    private void validarValorEmprestimo(Empregado empregado, Double valor) throws ValidacaoEmprestimoException, RegraEmprestimoDAOException{
         RegraEmprestimo regraEmprestimo = regraEmprestimoRepositorio.procurar(empregado.getSexo(), empregado.getIdade(), empregado.getSalarioAtual());
         if(valor > regraEmprestimo.calculaLimiteEmprestimo(empregado.getSalarioAtual()))
             throw new ValorSolicitadoMaiorQueOPermitidoException("O valor de empréstimo solicitado é maior que o valor permitido para esse empregado!");

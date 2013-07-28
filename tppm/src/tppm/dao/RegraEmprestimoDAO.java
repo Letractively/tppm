@@ -5,17 +5,17 @@
 package tppm.dao;
 
 import tppm.domains.RegraEmprestimo;
-import tppm.exceptions.RegraEmprestimoException;
+import tppm.exceptions.DAOExceptions.RegraEmprestimoDAOException;
 
 /**
  *
  * @author Tiago Neves + Pedro Jardim
  */
 public interface RegraEmprestimoDAO {
-    public RegraEmprestimo procurar(String sexo, int idade, Double salario) throws RegraEmprestimoException;
-    public int obterIdadeMinima(String sexo) throws RegraEmprestimoException;
-    public int obterIdadeMaxima(String sexo) throws RegraEmprestimoException;
-    public void incluir(RegraEmprestimo regraEmprestimoEmpregado) throws RegraEmprestimoException;
-    public void excluir(RegraEmprestimo regraEmprestimoEmpregado) throws RegraEmprestimoException;
-    public void alterar(RegraEmprestimo regraEmprestimoEmpregado) throws RegraEmprestimoException;
+    public RegraEmprestimo procurar(String sexo, int idade, Double salario) throws RegraEmprestimoDAOException;
+    public int obterIdadeMinima(String sexo) throws RegraEmprestimoDAOException;
+    public int obterIdadeMaxima(String sexo) throws RegraEmprestimoDAOException;
+    public void incluir(RegraEmprestimo regraEmprestimoEmpregado) throws RegraEmprestimoDAOException;
+    public void excluir(RegraEmprestimo regraEmprestimoEmpregado) throws RegraEmprestimoDAOException;
+    public void alterar(RegraEmprestimo regraEmprestimoEmpregado) throws RegraEmprestimoDAOException;
 }

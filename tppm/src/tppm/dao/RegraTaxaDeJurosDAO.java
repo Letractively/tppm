@@ -5,7 +5,7 @@
 package tppm.dao;
 
 import tppm.domains.RegraTaxaDeJuros;
-import tppm.exceptions.RegraTaxaDeJurosDAOException;
+import tppm.exceptions.DAOExceptions.RegraTaxaDeJurosDAOException;
 
 /**
  *

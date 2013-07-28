@@ -4,6 +4,7 @@
  */
 package tppm.services;
 
+import tppm.exceptions.DAOExceptions.EmpregadoDAOException;
 import tppm.exceptions.validacaoEmpregadoExceptions.CPFJaExisteException;
 import tppm.exceptions.validacaoEmpregadoExceptions.ValidacaoEmpregadoException;
 import java.util.Date;

@@ -5,7 +5,7 @@
 package tppm.dao;
 
 import tppm.domains.Empregado;
-import tppm.exceptions.EmpregadoDAOException;
+import tppm.exceptions.DAOExceptions.EmpregadoDAOException;
 
 /**
  *

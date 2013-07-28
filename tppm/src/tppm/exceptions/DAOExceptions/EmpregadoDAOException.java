@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tppm.exceptions;
+package tppm.exceptions.DAOExceptions;
 
-import tppm.exceptions.XMLDAOExceptions.GenericXMLDAOException;
+import tppm.exceptions.DAOExceptions.XMLDAOExceptions.GenericXMLDAOException;
 
 /**
  *

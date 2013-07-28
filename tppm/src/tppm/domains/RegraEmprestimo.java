@@ -4,6 +4,9 @@
  */
 package tppm.domains;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author Tiago Neves + Pedro Jardim
@@ -25,7 +28,25 @@ public class RegraEmprestimo {
         this.salarioMaximo = salarioMaximo;
         this.porcentagemLimiteSalario = porcentagemLimiteSalario;
     }
+    
+    public RegraEmprestimo(RegraEmprestimo regra) {
+        this.sexo = regra.getSexo();
+        this.idadeMinima = regra.getIdadeMinima();
+        this.idadeMaxima = regra.getIdadeMaxima();
+        this.salarioMinimo = regra.getSalarioMinimo();
+        this.salarioMaximo = regra.getSalarioMaximo();
+        this.porcentagemLimiteSalario = regra.getPorcentagemLimiteSalario();
+    }
+    
+    @Override
+    public boolean equals(Object empregadoComparado) {
+        return getListaPropriedades().equals(((RegraEmprestimo) empregadoComparado).getListaPropriedades());
+    }
 
+    private List<?> getListaPropriedades(){
+        return Arrays.asList(getSexo(), getIdadeMinima(), getIdadeMaxima(), getSalarioMinimo(), getSalarioMaximo(), getPorcentagemLimiteSalario());
+    }
+    
     public int getIdadeMaxima() {
         return idadeMaxima;
     }
@@ -76,5 +97,13 @@ public class RegraEmprestimo {
 
     public Double calculaLimiteEmprestimo(Double salario){
         return salario * getPorcentagemLimiteSalario();
+    }
+    
+    public boolean verificaSeIdadeEstaNaFaixa(int idade){
+        return (idade >= getIdadeMinima() && idade <= getIdadeMaxima());
+    }
+    
+    public boolean verificaSeSalarioEstaNaFaixa(Double salario){
+        return (salario >= getSalarioMinimo() && salario <= getSalarioMaximo());
     }
 }

@@ -10,6 +10,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import tppm.config.TPPMConfig;
 import tppm.datapoints.RegraEmprestimoDataPoint;
 import static org.junit.Assert.*;
 
@@ -20,8 +21,6 @@ import static org.junit.Assert.*;
 
 @RunWith(Theories.class)
 public class RegraEmprestimoTest {
-    
-    final Double DELTA = 0.01;
     
     @DataPoints
     public static RegraEmprestimoDataPoint[] regrasEmprestimo = {
@@ -42,6 +41,6 @@ public class RegraEmprestimoTest {
         Assume.assumeTrue(Arrays.asList(regrasEmprestimo).contains(cenario));
         RegraEmprestimo regra = new RegraEmprestimo(null, 0, 0, null, null, cenario.porcentagemLimiteSalario);
         Double resultado = regra.calculaLimiteEmprestimo(cenario.salario);
-        assertEquals(cenario.limite, resultado, DELTA);
+        assertEquals(cenario.limite, resultado, TPPMConfig.DELTA_COMPARACAO_DOUBLE);
     }
 }

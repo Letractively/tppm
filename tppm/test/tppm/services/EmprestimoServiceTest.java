@@ -13,6 +13,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import tppm.config.TPPMConfig;
 import tppm.dao.RegraEmprestimoDAO;
 import tppm.dao.RegraTaxaDeJurosDAO;
 import static org.junit.Assert.*;
@@ -29,8 +30,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(Theories.class)
 public class EmprestimoServiceTest {
-    
-    final Double DELTA = 0.01;
     
     EmprestimoService emprestimoService;
     
@@ -185,8 +184,8 @@ public class EmprestimoServiceTest {
             Empregado empregado = cenario.getEmpregado();
             Emprestimo emprestimo = emprestimoService.calcularEmprestimo(empregado, cenario.valor, cenario.numeroPrestacoes);
             assertEquals(cenario.numeroPrestacoes, emprestimo.getNumeroPrestacoes());
-            assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(1), DELTA);
-            assertEquals(cenario.valorTotalEmprestimo, emprestimo.getValorTotalPagar(), DELTA);
+            assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(1), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
+            assertEquals(cenario.valorTotalEmprestimo, emprestimo.getValorTotalPagar(), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
         } catch(Exception e){
             if(e.getClass() != cenario.exceptionEsperada){
                 System.out.println("Erro Inesperado: " + e.getMessage() + " Esperava: " + cenario.exceptionEsperada);
