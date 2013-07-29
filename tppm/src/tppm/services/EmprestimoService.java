@@ -4,8 +4,8 @@
  */
 package tppm.services;
 
-import tppm.dao.RegraEmprestimoDAO;
-import tppm.dao.RegraTaxaDeJurosDAO;
+import tppm.domains.dao.RegraEmprestimoDAO;
+import tppm.domains.dao.RegraTaxaDeJurosDAO;
 import tppm.domains.Empregado;
 import tppm.domains.Emprestimo;
 import tppm.domains.RegraEmprestimo;

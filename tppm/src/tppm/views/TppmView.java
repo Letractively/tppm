@@ -90,6 +90,36 @@ public class TppmView extends FrameView {
         }
         TppmApp.getApplication().show(aboutBox);
     }
+    
+    @Action
+    public void showIncluirEmpregadoBox() {
+        if (incluirEmpregadoBox == null) {
+            JFrame mainFrame = TppmApp.getApplication().getMainFrame();
+            incluirEmpregadoBox = new TppmIncluirEmpregadoBox();
+            incluirEmpregadoBox.setLocationRelativeTo(mainFrame);
+        }
+        TppmApp.getApplication().show(incluirEmpregadoBox);
+    }
+    
+    @Action
+    public void showAlterarEmpregadoBox() {
+        if (alterarEmpregadoBox == null) {
+            JFrame mainFrame = TppmApp.getApplication().getMainFrame();
+            alterarEmpregadoBox = new TppmAlterarEmpregadoBox(mainFrame, true);
+            alterarEmpregadoBox.setLocationRelativeTo(mainFrame);
+        }
+        TppmApp.getApplication().show(alterarEmpregadoBox);
+    }
+    
+    @Action
+    public void showExcluirEmpregadoBox() {
+        if (excluirEmpregadoBox == null) {
+            JFrame mainFrame = TppmApp.getApplication().getMainFrame();
+            excluirEmpregadoBox = new TppmExcluirEmpregadoBox();
+            excluirEmpregadoBox.setLocationRelativeTo(mainFrame);
+        }
+        TppmApp.getApplication().show(excluirEmpregadoBox);
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -104,6 +134,10 @@ public class TppmView extends FrameView {
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        menuEmpregados = new javax.swing.JMenu();
+        incluirEmpregadoMenuItem = new javax.swing.JMenuItem();
+        excluirEmpregadoMenuItem = new javax.swing.JMenuItem();
+        alterarEmpregadoMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -122,7 +156,7 @@ public class TppmView extends FrameView {
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
+            .addGap(0, 254, Short.MAX_VALUE)
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -133,15 +167,37 @@ public class TppmView extends FrameView {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(tppm.views.TppmApp.class).getContext().getActionMap(TppmView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
+        menuEmpregados.setText(resourceMap.getString("menuEmpregados.text")); // NOI18N
+        menuEmpregados.setName("menuEmpregados"); // NOI18N
+
+        incluirEmpregadoMenuItem.setAction(actionMap.get("showIncluirEmpregadoBox")); // NOI18N
+        incluirEmpregadoMenuItem.setText(resourceMap.getString("incluirEmpregadoMenuItem.text")); // NOI18N
+        incluirEmpregadoMenuItem.setName("incluirEmpregadoMenuItem"); // NOI18N
+        menuEmpregados.add(incluirEmpregadoMenuItem);
+
+        excluirEmpregadoMenuItem.setAction(actionMap.get("showExcluirEmpregadoBox")); // NOI18N
+        excluirEmpregadoMenuItem.setText(resourceMap.getString("excluirEmpregadoMenuItem.text")); // NOI18N
+        excluirEmpregadoMenuItem.setName("excluirEmpregadoMenuItem"); // NOI18N
+        menuEmpregados.add(excluirEmpregadoMenuItem);
+
+        alterarEmpregadoMenuItem.setAction(actionMap.get("showAlterarEmpregadoBox")); // NOI18N
+        alterarEmpregadoMenuItem.setText(resourceMap.getString("alterarEmpregadoMenuItem.text")); // NOI18N
+        alterarEmpregadoMenuItem.setName("alterarEmpregadoMenuItem"); // NOI18N
+        menuEmpregados.add(alterarEmpregadoMenuItem);
+
+        menuBar.add(menuEmpregados);
+
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setText(resourceMap.getString("aboutMenuItem.text")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
@@ -166,7 +222,7 @@ public class TppmView extends FrameView {
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -190,8 +246,12 @@ public class TppmView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem alterarEmpregadoMenuItem;
+    private javax.swing.JMenuItem excluirEmpregadoMenuItem;
+    private javax.swing.JMenuItem incluirEmpregadoMenuItem;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuEmpregados;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
@@ -205,4 +265,7 @@ public class TppmView extends FrameView {
     private int busyIconIndex = 0;
 
     private JDialog aboutBox;
+    private JFrame incluirEmpregadoBox;
+    private JDialog alterarEmpregadoBox;
+    private JFrame excluirEmpregadoBox;
 }

@@ -4,6 +4,7 @@
  */
 package tppm.dao;
 
+import tppm.domains.dao.RegraEmprestimoDAOMemoria;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

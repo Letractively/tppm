@@ -4,8 +4,8 @@
  */
 package tppm.config;
 
-import tppm.dao.RegraEmprestimoDAOMemoria;
-import tppm.dao.RegraTaxaDeJurosDAOMemoria;
+import tppm.domains.dao.RegraEmprestimoDAOMemoria;
+import tppm.domains.dao.RegraTaxaDeJurosDAOMemoria;
 import tppm.domains.Empregado;
 import tppm.domains.RegraEmprestimo;
 import tppm.domains.RegraTaxaDeJuros;

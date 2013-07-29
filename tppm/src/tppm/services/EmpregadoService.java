@@ -8,9 +8,9 @@ import tppm.exceptions.DAOExceptions.EmpregadoDAOException;
 import tppm.exceptions.validacaoEmpregadoExceptions.CPFJaExisteException;
 import tppm.exceptions.validacaoEmpregadoExceptions.ValidacaoEmpregadoException;
 import java.util.Date;
-import tppm.dao.EmpregadoDAO;
+import tppm.domains.dao.EmpregadoDAO;
 import tppm.domains.*;
-import tppm.exceptions.*;
+import tppm.exceptions.validacaoEmpregadoExceptions.CPFNaoEstaCadastradoException;
 import tppm.exceptions.validacaoEmpregadoExceptions.CPFVazioException;
 import tppm.exceptions.validacaoEmpregadoExceptions.DataAdmissaoAnteriorDataNascimentoException;
 import tppm.exceptions.validacaoEmpregadoExceptions.DataAdmissaoNulaException;
@@ -41,16 +41,37 @@ public class EmpregadoService {
         this.empregadoRepositorio = empregadoRepositorio;
     }
     
-    public void salvarEmpregado(Empregado empregado) throws ValidacaoEmpregadoException, EmpregadoDAOException{
-        validarDadosEmpregado(empregado);
+    public void alterarEmpregado(Empregado empregado) throws ValidacaoEmpregadoException, EmpregadoDAOException{
+        validarDadosAlterarEmpregado(empregado);
         empregadoRepositorio.alterar(empregado);
     }
     
     public Empregado incluirEmpregado(String cpf, String nome, String sexo, Date dataNascimento, Date dataAdmissao, Double salarioAtual, Date dataDesligamento) throws ValidacaoEmpregadoException, EmpregadoDAOException {
         Empregado empregado = new Empregado(cpf, nome, sexo, dataNascimento, dataAdmissao, salarioAtual, dataDesligamento);
-        validarDadosEmpregado(empregado);
+        validarDadosIncluirEmpregado(empregado);
         empregadoRepositorio.incluir(empregado);
         return empregado;
+    }
+    
+    public void excluirEmpregado(Empregado empregado) throws EmpregadoDAOException, ValidacaoEmpregadoException{
+        empregadoRepositorio.excluir(empregado);
+    }
+    
+    public Empregado procurarEmpregado(String cpf) throws EmpregadoDAOException, ValidacaoEmpregadoException{
+        UtilsValidacao.validaNumeroCPF(cpf);
+        return empregadoRepositorio.procurar(cpf);
+    }
+    
+    private void validarDadosAlterarEmpregado(Empregado empregado) throws ValidacaoEmpregadoException, EmpregadoDAOException{
+        validarDadosEmpregado(empregado);
+        if(!existeEmpregadoComCPF(empregado.getCpf())) 
+            throw new CPFNaoEstaCadastradoException("Erro. Você está tentando alterar um empregado que não existe no repositório!");
+    }
+    
+    private void validarDadosIncluirEmpregado(Empregado empregado) throws ValidacaoEmpregadoException, EmpregadoDAOException{
+        validarDadosEmpregado(empregado);
+        if(existeEmpregadoComCPF(empregado.getCpf())) 
+            throw new CPFJaExisteException("O CPF inserido já está cadastrado no sistema!");
     }
     
     private void validarDadosEmpregado(Empregado empregado) throws ValidacaoEmpregadoException, EmpregadoDAOException{
@@ -67,8 +88,6 @@ public class EmpregadoService {
         if(cpf == null || cpf.equals("")) 
             throw new CPFVazioException("O CPF não pode ser vazio!");
         UtilsValidacao.validaNumeroCPF(cpf);
-        if(existeEmpregadoComCPF(cpf)) 
-            throw new CPFJaExisteException("O CPF inserido já está cadastrado no sistema!");
     }
     
     private void validarNome(String nome) throws ValidacaoEmpregadoException{

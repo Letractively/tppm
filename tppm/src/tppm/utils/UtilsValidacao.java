@@ -16,6 +16,8 @@ public class UtilsValidacao {
     static public void validaNumeroCPF(String cpf) throws ValidacaoEmpregadoException{
         //Código obtido no link passado no trabalho: http://javafree.uol.com.br/topic-860897-Validar-CPF--CNPJ-e-consultar-CEP.html
         
+        if(cpf == null || cpf.length() != 11) throw new CPFInvalidoException("O CPF inserido não é válido!");
+        
         int     d1, d2;  
         int     digito1, digito2, resto;  
         int     digitoCPF;  

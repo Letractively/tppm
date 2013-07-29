@@ -4,8 +4,14 @@
  */
 package tppm.utils;
 
+import java.awt.Component;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
+import tppm.config.TPPMConfig;
+import tppm.exceptions.dataParseExceptions.DataParseErroException;
 
 /**
  *
@@ -43,4 +49,29 @@ public class Utils {
         return new Date();
     }
     
+    public static Date converterStringParaData(String data) throws DataParseErroException{
+        try{
+            if(data == null || data.length() == 0) return null;
+            SimpleDateFormat formato = new SimpleDateFormat(TPPMConfig.FORMATO_DATA);  
+            formato.setLenient(false);
+            return formato.parse(data);
+        }
+        catch(Exception e){
+            throw new DataParseErroException("O padrão de data não foi reconhecido pelo sistema");
+        }
+    }
+    
+    public static String converterDataParaString(Date data){
+        SimpleDateFormat formato = new SimpleDateFormat(TPPMConfig.FORMATO_DATA);  
+        formato.setLenient(false);
+        return formato.format(data);
+    }
+    
+    public static void exibeErro(Component component, String mensagem){
+        JOptionPane.showMessageDialog(component, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void exibeMensagem(Component component, String mensagem){
+        JOptionPane.showMessageDialog(component, mensagem, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

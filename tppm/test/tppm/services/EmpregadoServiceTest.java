@@ -13,7 +13,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import tppm.dao.EmpregadoDAO;
+import tppm.domains.dao.EmpregadoDAO;
 import tppm.datapoints.EmpregadoDataPoint;
 import static org.junit.Assert.*;
 import tppm.domains.Empregado;
@@ -158,7 +158,7 @@ public class EmpregadoServiceTest {
     }
     
     @Theory
-    public void testIncluirEmpregadoCPFInvalido(EmpregadoDataPoint cenario) throws Exception {
+    public void testIncluirEmpregadoComDataPoints(EmpregadoDataPoint cenario) throws Exception {
         Assume.assumeTrue(Arrays.asList(empregados).contains(cenario));
         EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
         EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);

@@ -1,5 +1,6 @@
 package tppm.dao;
 
+import tppm.domains.dao.EmpregadoDAOXML;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import org.junit.After;

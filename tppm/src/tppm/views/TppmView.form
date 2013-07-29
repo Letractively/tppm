@@ -15,7 +15,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="252" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="254" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -44,12 +44,48 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
                 </Property>
+                <Property name="text" type="java.lang.String" resourceKey="exitMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="menuEmpregados">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="menuEmpregados.text"/>
+            <Property name="name" type="java.lang.String" value="menuEmpregados" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="incluirEmpregadoMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="tppm.views.TppmView" id="showIncluirEmpregadoBox" methodName="showIncluirEmpregadoBox"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="incluirEmpregadoMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="incluirEmpregadoMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="excluirEmpregadoMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="tppm.views.TppmView" id="showExcluirEmpregadoBox" methodName="showExcluirEmpregadoBox"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="excluirEmpregadoMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="excluirEmpregadoMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="alterarEmpregadoMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="tppm.views.TppmView" id="showAlterarEmpregadoBox" methodName="showAlterarEmpregadoBox"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="alterarEmpregadoMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="alterarEmpregadoMenuItem" noResource="true"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -68,6 +104,7 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="tppm.views.TppmView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
+                <Property name="text" type="java.lang.String" resourceKey="aboutMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
@@ -91,7 +128,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="statusMessageLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="226" max="32767" attributes="0"/>
+                  <EmptySpace pref="230" max="32767" attributes="0"/>
                   <Component id="progressBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="statusAnimationLabel" min="-2" max="-2" attributes="0"/>
