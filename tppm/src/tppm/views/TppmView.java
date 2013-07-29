@@ -93,11 +93,9 @@ public class TppmView extends FrameView {
     
     @Action
     public void showIncluirEmpregadoBox() {
-        if (incluirEmpregadoBox == null) {
-            JFrame mainFrame = TppmApp.getApplication().getMainFrame();
-            incluirEmpregadoBox = new TppmIncluirEmpregadoBox();
-            incluirEmpregadoBox.setLocationRelativeTo(mainFrame);
-        }
+        JFrame mainFrame = TppmApp.getApplication().getMainFrame();
+        incluirEmpregadoBox = new TppmIncluirEmpregadoBox();
+        incluirEmpregadoBox.setLocationRelativeTo(mainFrame);
         TppmApp.getApplication().show(incluirEmpregadoBox);
     }
     
