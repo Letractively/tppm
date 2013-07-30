@@ -73,6 +73,6 @@ public class EmprestimoTest {
         when(regraTaxaDeJuros.getTaxaDeJuros()).thenReturn(cenario.taxaDeJuros);
         
         Emprestimo emprestimo = new Emprestimo(null, cenario.valor, cenario.numeroPrestacoes, regraTaxaDeJuros);
-        assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(1), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
+        assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
     }
 }

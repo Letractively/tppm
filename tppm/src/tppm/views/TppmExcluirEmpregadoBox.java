@@ -25,7 +25,7 @@ public class TppmExcluirEmpregadoBox extends javax.swing.JFrame {
     /** Creates new form TppmExcluirEmpregadoBox */
     public TppmExcluirEmpregadoBox() {
         initComponents();
-        empregadoController = new EmpregadoController(this);
+        empregadoController = new EmpregadoController();
     }
 
     /** This method is called from within the constructor to

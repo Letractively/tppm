@@ -29,7 +29,7 @@ public class TppmAlterarEmpregadoBox extends javax.swing.JDialog {
     public TppmAlterarEmpregadoBox(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        empregadoController = new EmpregadoController(this);
+        empregadoController = new EmpregadoController();
     }
 
     /** This method is called from within the constructor to

@@ -4,7 +4,6 @@
  */
 package tppm.controllers;
 
-import java.awt.Component;
 import java.util.Date;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -30,7 +29,7 @@ public class EmpregadoController {
     
     EmpregadoService empregadoService;
 
-    public EmpregadoController(Component view) {
+    public EmpregadoController() {
         EmpregadoDAO empregadoDAO = new EmpregadoDAOXML(TPPMConfig.NOME_ARQUIVO_REPOSITORIO_EMPREGADOS);
         this.empregadoService = new EmpregadoService(empregadoDAO);
     }

@@ -26,7 +26,7 @@ public class TppmAlterarEmpregadoFormBox extends javax.swing.JFrame {
     /** Creates new form TppmAlterarEmpregadoFormBox */
     public TppmAlterarEmpregadoFormBox(Empregado empregado) {
         initComponents();
-        empregadoController = new EmpregadoController(this);
+        empregadoController = new EmpregadoController();
         preencherCampoComDadosDoEmpregadoSelecionado(empregado);
     }
     

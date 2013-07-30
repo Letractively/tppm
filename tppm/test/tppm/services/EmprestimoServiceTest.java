@@ -184,7 +184,7 @@ public class EmprestimoServiceTest {
             Empregado empregado = cenario.getEmpregado();
             Emprestimo emprestimo = emprestimoService.calcularEmprestimo(empregado, cenario.valor, cenario.numeroPrestacoes);
             assertEquals(cenario.numeroPrestacoes, emprestimo.getNumeroPrestacoes());
-            assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(1), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
+            assertEquals(cenario.valorTotalEmprestimo/cenario.numeroPrestacoes, emprestimo.getValorPrestacao(), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
             assertEquals(cenario.valorTotalEmprestimo, emprestimo.getValorTotalPagar(), TPPMConfig.DELTA_COMPARACAO_DOUBLE);
         } catch(Exception e){
             if(e.getClass() != cenario.exceptionEsperada){

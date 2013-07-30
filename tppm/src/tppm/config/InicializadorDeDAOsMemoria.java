@@ -44,6 +44,14 @@ public class InicializadorDeDAOsMemoria {
         regraEmprestimoDAOMemoria = new RegraEmprestimoDAOMemoria();
         regraTaxaDeJurosDAOMemoria = new RegraTaxaDeJurosDAOMemoria();
     }
+
+    public RegraEmprestimoDAOMemoria getRegraEmprestimoDAOMemoria() {
+        return regraEmprestimoDAOMemoria;
+    }
+
+    public RegraTaxaDeJurosDAOMemoria getRegraTaxaDeJurosDAOMemoria() {
+        return regraTaxaDeJurosDAOMemoria;
+    }
     
     public void inicializar() throws ErroAoInicializarDAOsMemoriaException{
         inicializarRegrasDeEmprestimo();

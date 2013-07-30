@@ -35,14 +35,10 @@ public class Emprestimo {
     }
     
     public Double getValorTotalPagar(){
-        Double valorTotal = 0.0;
-        for(int i = 1; i <= getNumeroPrestacoes(); i++){
-            valorTotal += getValorPrestacao(i);
-        }
-        return valorTotal;
+        return getValorPrestacao() * getNumeroPrestacoes();
     }
     
-    public Double getValorPrestacao(int numeroPrestacao){
+    public Double getValorPrestacao(){
         return getValorSolicitado() * calcularCF();
     }
     

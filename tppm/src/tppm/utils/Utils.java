@@ -5,6 +5,7 @@
 package tppm.utils;
 
 import java.awt.Component;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,5 +74,10 @@ public class Utils {
     
     public static void exibeMensagem(Component component, String mensagem){
         JOptionPane.showMessageDialog(component, mensagem, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static Double arredondarDouble(Double valor) {
+        DecimalFormat formato = new DecimalFormat("#######.###");
+        return Double.valueOf(formato.format(valor));
     }
 }
