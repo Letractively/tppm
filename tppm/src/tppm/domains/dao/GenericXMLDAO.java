@@ -17,6 +17,10 @@ import tppm.exceptions.DAOExceptions.XMLDAOExceptions.GenericXMLDAOException;
 
 /**
  *
+ * Esse XML DAO foi feito para generalizar a comuniação com o XML, 
+ * assim a implementação de um DAO em XML, não precisa lidar com métodos específicos 
+ * da implementação em XML, e sim, com essa classe
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class GenericXMLDAO {

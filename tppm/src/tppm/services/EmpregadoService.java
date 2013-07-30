@@ -31,6 +31,10 @@ import tppm.utils.UtilsValidacao;
 
 /**
  *
+ * Nas classes de service os dados passam pelas validações das regras de negócio estabelecidas
+ * e são encaminhadas ao respectivo domínio, instanciando as classes de domínio
+ * e salvando somente se forem validadas
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class EmpregadoService {

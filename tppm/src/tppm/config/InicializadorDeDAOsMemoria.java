@@ -15,6 +15,10 @@ import tppm.exceptions.ErroAoInicializarDAOsMemoriaException;
 
 /**
  *
+ * Essa Classe tem como função inicializar os DAOs em memória das regras de empréstimo
+ * elas ficam armazenadas aqui como constantes e vão para o DAO para serem utilizadas pelo programa
+ * essa classe é iniciada no início do sistema pelo emprestimoController
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class InicializadorDeDAOsMemoria {

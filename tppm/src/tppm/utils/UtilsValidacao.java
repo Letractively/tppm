@@ -9,6 +9,8 @@ import tppm.exceptions.validacaoEmpregadoExceptions.CPFInvalidoException;
 
 /**
  *
+ * Essa classe possui métodos utilitários que são específicos das validações.
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class UtilsValidacao {

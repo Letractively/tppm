@@ -6,7 +6,6 @@ package tppm.utils;
 
 import java.awt.Component;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,6 +15,10 @@ import tppm.exceptions.dataParseExceptions.DataParseErroException;
 
 /**
  *
+ * essa classe contém somente métodos estáticos feitos para auxiliar o resto do programa.
+ * coisas que são muito repetitivas e consomem muitas linhas de código em vários lugares 
+ * geralmente são colocadas aqui para serem reutilizadas
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class Utils {

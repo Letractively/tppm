@@ -23,6 +23,10 @@ import tppm.utils.Utils;
 
 /**
  *
+ * Essa classe foi feita para intermediar a comunicação de uma view com um service
+ * nessa parte, a view passa os parâmetros em string e essa classe converte e chama o service apropriado,
+ * instanciado aqui com a implementação escolhida do DAO do service
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class EmpregadoController {

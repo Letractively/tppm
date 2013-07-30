@@ -6,6 +6,8 @@ package tppm.config;
 
 /**
  *
+ * Essa classe foi concebida para guardar constantes globais do sistema
+ * 
  * @author Tiago Neves + Pedro Jardim
  */
 public class TPPMConfig {
