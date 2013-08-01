@@ -139,7 +139,7 @@ public class EmpregadoServiceTest {
         EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
         when(empregadoDAO.procurar(anyString())).thenReturn(null);
         
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
+        EmpregadoServiceImpl empregadoService = new EmpregadoServiceImpl(empregadoDAO);
         Empregado resultadoEsperado = empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null);
         
         assertEquals(resultadoEsperado, empregado);
@@ -153,7 +153,7 @@ public class EmpregadoServiceTest {
         EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
         when(empregadoDAO.procurar(anyString())).thenReturn(empregado);
         
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
+        EmpregadoServiceImpl empregadoService = new EmpregadoServiceImpl(empregadoDAO);
         empregadoService.incluirEmpregado(CPF_VALIDO, NOME_VALIDO, SEXO_VALIDO, DATA_NASCIMENTO_VALIDA, DATA_ADMISSAO_VALIDA, SALARIO_VALIDO, null);
     }
     
@@ -161,7 +161,7 @@ public class EmpregadoServiceTest {
     public void testIncluirEmpregadoComDataPoints(EmpregadoDataPoint cenario) throws Exception {
         Assume.assumeTrue(Arrays.asList(empregados).contains(cenario));
         EmpregadoDAO empregadoDAO = mock(EmpregadoDAO.class);
-        EmpregadoService empregadoService = new EmpregadoService(empregadoDAO);
+        EmpregadoServiceImpl empregadoService = new EmpregadoServiceImpl(empregadoDAO);
         try{
             empregadoService.incluirEmpregado(cenario.empregado.getCpf(), cenario.empregado.getNome(), cenario.empregado.getSexo(), cenario.empregado.getDataNascimento(), cenario.empregado.getDataAdmissao(), cenario.empregado.getSalarioAtual(), cenario.empregado.getDataDesligamento());
         }

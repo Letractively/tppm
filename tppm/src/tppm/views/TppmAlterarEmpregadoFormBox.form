@@ -149,7 +149,7 @@
     <Component class="javax.swing.JComboBox" name="sexoComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="EmpregadoController.obtemComboSexoModel()" type="code"/>
+          <Connection code="obtemComboSexoModel()" type="code"/>
         </Property>
         <Property name="name" type="java.lang.String" value="sexoComboBox" noResource="true"/>
       </Properties>

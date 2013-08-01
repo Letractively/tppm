@@ -10,7 +10,10 @@
  */
 package tppm.views;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
 import tppm.controllers.EmpregadoController;
+import tppm.controllers.EmpregadoControllerImpl;
 import tppm.domains.Empregado;
 import tppm.utils.Utils;
 
@@ -24,9 +27,9 @@ public class TppmAlterarEmpregadoFormBox extends javax.swing.JFrame {
     EmpregadoController empregadoController;
     
     /** Creates new form TppmAlterarEmpregadoFormBox */
-    public TppmAlterarEmpregadoFormBox(Empregado empregado) {
+    public TppmAlterarEmpregadoFormBox(EmpregadoController empregadoController, Empregado empregado) {
         initComponents();
-        empregadoController = new EmpregadoController();
+        this.empregadoController = empregadoController;
         preencherCampoComDadosDoEmpregadoSelecionado(empregado);
     }
     
@@ -82,7 +85,7 @@ public class TppmAlterarEmpregadoFormBox extends javax.swing.JFrame {
         sexoLabel.setText(resourceMap.getString("sexoLabel.text")); // NOI18N
         sexoLabel.setName("sexoLabel"); // NOI18N
 
-        sexoComboBox.setModel(EmpregadoController.obtemComboSexoModel());
+        sexoComboBox.setModel(obtemComboSexoModel());
         sexoComboBox.setName("sexoComboBox"); // NOI18N
 
         dataNascimentoLabel.setText(resourceMap.getString("dataNascimentoLabel.text")); // NOI18N
@@ -280,6 +283,10 @@ public class TppmAlterarEmpregadoFormBox extends javax.swing.JFrame {
     private void preencherCampoDataDesligamento(Empregado empregado){
         if(empregado.getDataDesligamento() != null)
             dataDesligamentoInput.setText(Utils.converterDataParaString(empregado.getDataDesligamento()));
+    }
+    
+    public static ComboBoxModel obtemComboSexoModel(){
+        return (new JComboBox(EmpregadoControllerImpl.obtemListaSexosDisponiveis()).getModel());
     }
     
     public void closeAlterarEmpregadoFormBox() {

@@ -4,8 +4,6 @@
 
 package tppm.views;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -20,7 +18,6 @@ import javax.swing.JFrame;
 import tppm.controllers.EmpregadoController;
 import tppm.controllers.EmprestimoController;
 import tppm.domains.Emprestimo;
-import tppm.exceptions.ErroAoInicializarDAOsMemoriaException;
 import tppm.utils.Utils;
 
 /**
@@ -28,21 +25,16 @@ import tppm.utils.Utils;
  */
 public class TppmView extends FrameView {
 
-    EmprestimoController emprestimoController;
-    EmpregadoController empregadoController;
+    private EmprestimoController emprestimoController;
+    private EmpregadoController empregadoController;
     
-    public TppmView(SingleFrameApplication app) {
+    public TppmView(SingleFrameApplication app, EmprestimoController emprestimoController, EmpregadoController empregadoController) {
         super(app);
 
         initComponents();
         
-        try {
-            emprestimoController = new EmprestimoController();
-        } catch (ErroAoInicializarDAOsMemoriaException ex) {
-            Utils.exibeErro(getFrame(), "Oops, houve um erro ao inicializar os dados das regras de empréstimo!");
-        }
-        
-        empregadoController = new EmpregadoController();
+        this.empregadoController = empregadoController;
+        this.emprestimoController = emprestimoController;
         
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -112,7 +104,7 @@ public class TppmView extends FrameView {
     @Action
     public void showIncluirEmpregadoBox() {
         JFrame mainFrame = TppmApp.getApplication().getMainFrame();
-        incluirEmpregadoBox = new TppmIncluirEmpregadoBox();
+        incluirEmpregadoBox = new TppmIncluirEmpregadoBox(empregadoController);
         incluirEmpregadoBox.setLocationRelativeTo(mainFrame);
         TppmApp.getApplication().show(incluirEmpregadoBox);
     }
@@ -121,7 +113,7 @@ public class TppmView extends FrameView {
     public void showAlterarEmpregadoBox() {
         if (alterarEmpregadoBox == null) {
             JFrame mainFrame = TppmApp.getApplication().getMainFrame();
-            alterarEmpregadoBox = new TppmAlterarEmpregadoBox(mainFrame, true);
+            alterarEmpregadoBox = new TppmAlterarEmpregadoBox(empregadoController);
             alterarEmpregadoBox.setLocationRelativeTo(mainFrame);
         }
         TppmApp.getApplication().show(alterarEmpregadoBox);
@@ -131,7 +123,7 @@ public class TppmView extends FrameView {
     public void showExcluirEmpregadoBox() {
         if (excluirEmpregadoBox == null) {
             JFrame mainFrame = TppmApp.getApplication().getMainFrame();
-            excluirEmpregadoBox = new TppmExcluirEmpregadoBox();
+            excluirEmpregadoBox = new TppmExcluirEmpregadoBox(empregadoController);
             excluirEmpregadoBox.setLocationRelativeTo(mainFrame);
         }
         TppmApp.getApplication().show(excluirEmpregadoBox);
@@ -388,7 +380,7 @@ public class TppmView extends FrameView {
 
     private JDialog aboutBox;
     private JFrame incluirEmpregadoBox;
-    private JDialog alterarEmpregadoBox;
+    private JFrame alterarEmpregadoBox;
     private JFrame excluirEmpregadoBox;
     private JFrame resultadoEmprestimoBox;
 

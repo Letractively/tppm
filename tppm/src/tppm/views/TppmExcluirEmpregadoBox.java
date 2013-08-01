@@ -25,7 +25,11 @@ public class TppmExcluirEmpregadoBox extends javax.swing.JFrame {
     /** Creates new form TppmExcluirEmpregadoBox */
     public TppmExcluirEmpregadoBox() {
         initComponents();
-        empregadoController = new EmpregadoController();
+    }
+    
+    public TppmExcluirEmpregadoBox(EmpregadoController empregadoController) {
+        initComponents();
+        this.empregadoController = empregadoController;
     }
 
     /** This method is called from within the constructor to
@@ -109,17 +113,6 @@ public class TppmExcluirEmpregadoBox extends javax.swing.JFrame {
         this.dispose();
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new TppmExcluirEmpregadoBox().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btExcluirEmpregado;
     private javax.swing.JTextField inputCpf;

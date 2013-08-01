@@ -5,7 +5,21 @@
 package tppm.views;
 
 import org.jdesktop.application.Application;
+import org.jdesktop.application.FrameView;
 import org.jdesktop.application.SingleFrameApplication;
+import tppm.config.InicializadorDeDAOsMemoria;
+import tppm.config.TPPMConfig;
+import tppm.controllers.EmpregadoController;
+import tppm.controllers.EmpregadoControllerImpl;
+import tppm.controllers.EmprestimoController;
+import tppm.controllers.EmprestimoControllerImpl;
+import tppm.domains.dao.EmpregadoDAO;
+import tppm.domains.dao.EmpregadoDAOXML;
+import tppm.exceptions.ErroAoInicializarDAOsMemoriaException;
+import tppm.services.EmpregadoService;
+import tppm.services.EmpregadoServiceImpl;
+import tppm.services.EmprestimoService;
+import tppm.services.EmprestimoServiceImpl;
 
 /**
  * The main class of the application.
@@ -16,7 +30,19 @@ public class TppmApp extends SingleFrameApplication {
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        show(new TppmView(this));
+        try {
+            InicializadorDeDAOsMemoria inicializador = new InicializadorDeDAOsMemoria();
+            inicializador.inicializar();
+            EmprestimoService emprestimoService = new EmprestimoServiceImpl(inicializador.getRegraTaxaDeJurosDAOMemoria(), inicializador.getRegraEmprestimoDAOMemoria());
+            EmpregadoDAO empregadoDAO = new EmpregadoDAOXML(TPPMConfig.NOME_ARQUIVO_REPOSITORIO_EMPREGADOS);
+            EmpregadoService empregadoService = new EmpregadoServiceImpl(empregadoDAO);
+            EmpregadoController empregadoController = new EmpregadoControllerImpl(empregadoService);
+            EmprestimoController emprestimoController = new EmprestimoControllerImpl(emprestimoService, empregadoService);
+            FrameView mainView = new TppmView(this, emprestimoController, empregadoController);
+            show(mainView);
+        } catch (ErroAoInicializarDAOsMemoriaException ex) {
+            System.out.println("Erro ao inicializar o programa!");
+        }
     }
 
     /**

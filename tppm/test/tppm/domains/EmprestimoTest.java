@@ -51,9 +51,6 @@ public class EmprestimoTest {
         )
     };
     
-    public EmprestimoTest() {
-    }
-    
     @Theory
     public void testGetValorTotalPagar(EmprestimoDataPoint cenario) {
         Assume.assumeTrue(Arrays.asList(emprestimos).contains(cenario));

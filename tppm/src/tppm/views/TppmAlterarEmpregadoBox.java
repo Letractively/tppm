@@ -21,15 +21,18 @@ import tppm.utils.Utils;
  *
  * @author Tiago
  */
-public class TppmAlterarEmpregadoBox extends javax.swing.JDialog {
+public class TppmAlterarEmpregadoBox extends javax.swing.JFrame {
 
     EmpregadoController empregadoController;
     
     /** Creates new form TppmAlterarEmpregadoBox */
-    public TppmAlterarEmpregadoBox(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public TppmAlterarEmpregadoBox() {
         initComponents();
-        empregadoController = new EmpregadoController();
+    }
+    
+    public TppmAlterarEmpregadoBox(EmpregadoController empregadoController) {
+        initComponents();
+        this.empregadoController = empregadoController;
     }
 
     /** This method is called from within the constructor to
@@ -117,29 +120,11 @@ public class TppmAlterarEmpregadoBox extends javax.swing.JDialog {
     
     private void abrirBoxAlterarEmpregadoForm(Empregado empregado){
         JFrame mainFrame = TppmApp.getApplication().getMainFrame();
-        alterarEmpregadoFormBox = new TppmAlterarEmpregadoFormBox(empregado);
+        alterarEmpregadoFormBox = new TppmAlterarEmpregadoFormBox(empregadoController, empregado);
         alterarEmpregadoFormBox.setLocationRelativeTo(mainFrame);
         TppmApp.getApplication().show(alterarEmpregadoFormBox);
     }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                TppmAlterarEmpregadoBox dialog = new TppmAlterarEmpregadoBox(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAlterarEmpregado;
     private javax.swing.JTextField cpfInput;

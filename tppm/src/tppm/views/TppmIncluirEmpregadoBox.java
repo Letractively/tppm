@@ -10,8 +10,11 @@
  */
 package tppm.views;
 
-import javax.swing.JOptionPane;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
 import tppm.controllers.EmpregadoController;
+import tppm.controllers.EmpregadoControllerImpl;
+import tppm.utils.Utils;
 
 
 /**
@@ -25,7 +28,11 @@ public class TppmIncluirEmpregadoBox extends javax.swing.JFrame {
     /** Creates new form TppmIncluirEmpregadoBox */
     public TppmIncluirEmpregadoBox() {
         initComponents();
-        empregadoController = new EmpregadoController();
+    }
+    
+    public TppmIncluirEmpregadoBox(EmpregadoController empregadoController) {
+        initComponents();
+        this.empregadoController = empregadoController;
     }
     
     /** This method is called from within the constructor to
@@ -79,7 +86,7 @@ public class TppmIncluirEmpregadoBox extends javax.swing.JFrame {
         sexoLabel.setText(resourceMap.getString("sexoLabel.text")); // NOI18N
         sexoLabel.setName("sexoLabel"); // NOI18N
 
-        sexoComboBox.setModel(EmpregadoController.obtemComboSexoModel());
+        sexoComboBox.setModel(obtemComboSexoModel());
         sexoComboBox.setName("sexoComboBox"); // NOI18N
 
         dataNascimentoLabel.setText(resourceMap.getString("dataNascimentoLabel.text")); // NOI18N
@@ -223,36 +230,21 @@ public class TppmIncluirEmpregadoBox extends javax.swing.JFrame {
         
         try{
             empregadoController.incluirEmpregado(cpf, nome, sexo, dataNascimento, dataAdmissao, salarioAtual, dataDesligamento);
-            exibeMensagem("Empregado incluido com sucesso!");
+            Utils.exibeMensagem(this, "Empregado incluido com sucesso!");
             closeIncluirEmpregadoBox();
         } catch(Exception e){
-            exibeErro(e.getMessage());
+            Utils.exibeErro(this, e.getMessage());
         }
     }//GEN-LAST:event_btIncluirEmpregadoActionPerformed
-
-    private void exibeErro(String mensagem){
-        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
-    }
     
-    private void exibeMensagem(String mensagem){
-        JOptionPane.showMessageDialog(this, mensagem, "", JOptionPane.INFORMATION_MESSAGE);
+    public static ComboBoxModel obtemComboSexoModel(){
+        return (new JComboBox(EmpregadoControllerImpl.obtemListaSexosDisponiveis()).getModel());
     }
     
     public void closeIncluirEmpregadoBox() {
         dispose();
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new TppmIncluirEmpregadoBox().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btIncluirEmpregado;
     private javax.swing.JTextField cpfInput;

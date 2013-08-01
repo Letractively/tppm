@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 @RunWith(Theories.class)
 public class EmprestimoServiceTest {
     
-    EmprestimoService emprestimoService;
+    EmprestimoServiceImpl emprestimoService;
     
     @DataPoints
     public static EmprestimoEmpregadoDataPoint[] emprestimos = {
@@ -173,7 +173,7 @@ public class EmprestimoServiceTest {
         when(regraTaxaDeJurosDAO.obterNumeroMinimoPrestacoes()).thenReturn(1);
         when(regraTaxaDeJurosDAO.obterNumeroMaximoPrestacoes()).thenReturn(18);
         
-        emprestimoService = new EmprestimoService(regraTaxaDeJurosDAO, regraEmprestimoDAO);
+        emprestimoService = new EmprestimoServiceImpl(regraTaxaDeJurosDAO, regraEmprestimoDAO);
     }
     
     @Theory
